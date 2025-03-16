@@ -1,0 +1,32 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-cms
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+    volumes:
+      - ./script:/docker-entrypoint-initdb.d # 挂载初始化脚本
+      # 将宿主机的 ./script 目录 挂载到 容器内的 /docker-entrypoint-initdb.d 目录。
+      # 当 MySQL 容器首次启动（数据目录为空）时，MySQL 会自动执行 docker-entrypoint-initdb.d 目录下的所有 .sql、.sh、.sql.gz 文件。
+      - mysql-data:/var/lib/mysql # 持久化 MySQL 数据
+      # /var/lib/mysql 是 MySQL 的数据存储目录，默认情况下，容器删除后，所有数据都会丢失。
+      # 将其挂载到 mysql-data 卷，可以持久化数据库数据，即使容器重启或删除，数据仍然保留。
+    command: --default-authentication-plugin=mysql_native_password # 指定默认的身份验证插件 让 MySQL 使用 mysql_native_password 认证方式，兼容旧版 MySQL 客户端
+    restart: always
+
+  redis:
+    image: redis:latest
+    container_name: redis-cms
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data # 持久化 Redis 数据
+    command: redis-server --appendonly yes # 启用 AOF 持久化
+    restart: always
+
+volumes:
+  mysql-data: # 定义一个名为 mysql-data 的 Docker 卷（用于存储 MySQL 数据）
+  redis-data: # 定义一个名为 redis-data 的 Docker 卷（用于存储 Redis 数据）
