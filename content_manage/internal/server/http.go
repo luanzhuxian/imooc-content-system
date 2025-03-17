@@ -1,7 +1,6 @@
 package server
 
 import (
-	v1 "content_manage/api/helloworld/v1"
 	"content_manage/internal/conf"
 	"content_manage/internal/service"
 
@@ -11,7 +10,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, app *service.AppService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -27,6 +26,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+	// RegisterHTTPServer will be implemented when the API HTTP code is generated
+	// For now, just return the server
 	return srv
 }
