@@ -11,14 +11,12 @@ import (
 type CmsApp struct {
 	db               *gorm.DB
 	rdb              *redis.Client
-	//operateAppClient operate.AppClient
 }
 
 func NewCmsApp() *CmsApp {
 	app := &CmsApp{}
 	connDB(app)
 	connRdb(app)
-	//connOperateAppClient(app)
 	return app
 }
 

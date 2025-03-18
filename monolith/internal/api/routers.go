@@ -23,7 +23,7 @@ func CmsRouters(r *gin.Engine) {
 			})
 		})
 
-		root.GET("/cms/hello", cmsApp.Hello)
+		root.GET("/hello", cmsApp.Hello)
 
 		root.POST("/cms/content/find", cmsApp.ContentFind)
 		root.POST("/cms/content/create", cmsApp.ContentCreate)
