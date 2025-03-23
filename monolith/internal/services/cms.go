@@ -48,6 +48,10 @@ func connRdb(app *CmsApp) {
 	app.rdb = rdb
 }
 
+func (c *CmsApp) GetDB() *gorm.DB {
+	return c.db
+}
+
 func (c *CmsApp) GetRedisClient() *redis.Client {
 	return c.rdb
 }

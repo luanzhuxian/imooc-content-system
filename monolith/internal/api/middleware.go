@@ -11,17 +11,17 @@ import (
 
 const SessionKey = "session_id"
 
-type SessionAuth struct {
+type SessionAuthMiddleware struct {
 	rdb *redis.Client
 }
 
-func (s *SessionAuth) Auth(ctx *gin.Context) {
+func (m *SessionAuthMiddleware) Auth(ctx *gin.Context) {
 	sessionID := ctx.GetHeader(SessionKey)
 	if sessionID == "" {
 		ctx.AbortWithStatusJSON(http.StatusForbidden, "session is id null")
 	}
 	authKey := utils.GetAuthKey(sessionID)
-	loginTime, err := s.rdb.Get(ctx, authKey).Result()
+	loginTime, err := m.rdb.Get(ctx, authKey).Result()
 	if err != nil && err != redis.Nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, "session auth error")
 	}

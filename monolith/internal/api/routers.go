@@ -1,7 +1,10 @@
 package api
 
 import (
+	"imooc-content-system/internal/controllers"
+	"imooc-content-system/internal/repository"
 	"imooc-content-system/internal/services"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,8 +17,12 @@ const (
 
 func CmsRouters(r *gin.Engine) {
 	cmsApp := services.NewCmsApp()
-	session := &SessionAuth{rdb: cmsApp.GetRedisClient()}
-	root := r.Group(rootPath).Use(session.Auth)
+	authMiddleware := &SessionAuthMiddleware{rdb: cmsApp.GetRedisClient()}
+
+	accountRepository := repository.NewAccountRepository(cmsApp.GetDB())
+	accountService := services.NewAccountService(accountRepository)
+	accountController := controllers.NewAccountController(accountService)
+	root := r.Group(rootPath).Use(authMiddleware.Auth)
 	{
 		root.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
@@ -34,6 +41,8 @@ func CmsRouters(r *gin.Engine) {
 	{
 		noAuth.POST("/cms/register", cmsApp.Register)
 		noAuth.POST("/cms/login", cmsApp.Login)
+		noAuth.POST("/cms/register2", accountController.Register)
+		noAuth.GET("/cms/user/:user_id", accountController.FindByUserID)
 	}
 
 }
