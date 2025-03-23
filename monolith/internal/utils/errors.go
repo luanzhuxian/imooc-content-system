@@ -1,4 +1,4 @@
-package common
+package utils
 
 import (
 	"errors"
@@ -9,13 +9,13 @@ import (
 var (
 	// ErrUserAlreadyExists is returned when attempting to register a user with an ID that already exists
 	ErrUserAlreadyExists = errors.New("user already exists")
-	
+
 	// ErrUserNotFound is returned when a user cannot be found
 	ErrUserNotFound = errors.New("user not found")
-	
+
 	// ErrInvalidCredentials is returned when user authentication fails
 	ErrInvalidCredentials = errors.New("invalid credentials")
-	
+
 	// ErrInternalServer is returned for unexpected server errors
 	ErrInternalServer = errors.New("internal server error")
 )
@@ -53,4 +53,4 @@ func NewUserAlreadyExistsError(userID string) *DomainError {
 		Message: fmt.Sprintf("User with ID '%s' already exists", userID),
 		Code:    "USER_ALREADY_EXISTS",
 	}
-} 
+}

@@ -2,9 +2,9 @@ package services
 
 import (
 	"context"
+	"imooc-content-system/internal/utils"
 	"time"
 
-	"imooc-content-system/internal/common"
 	"imooc-content-system/internal/domain"
 	"imooc-content-system/internal/repository"
 )
@@ -25,7 +25,7 @@ func (s *AccountService) RegisterUser(ctx context.Context, userID, password, nic
 	// ...
 
 	// 2. 加密密码
-	hashedPassword, err := common.EncryptPassword(password)
+	hashedPassword, err := utils.EncryptPassword(password)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (s *AccountService) RegisterUser(ctx context.Context, userID, password, nic
 	}
 
 	if exists {
-		return common.ErrUserAlreadyExists
+		return utils.ErrUserAlreadyExists
 	}
 
 	// 4. 创建账户

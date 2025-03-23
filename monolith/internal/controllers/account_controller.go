@@ -1,9 +1,9 @@
 package controllers
 
 import (
+	"imooc-content-system/internal/utils"
 	"net/http"
 
-	"imooc-content-system/internal/common"
 	"imooc-content-system/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -45,7 +45,7 @@ func (c *AccountController) Register(ctx *gin.Context) {
 	// 3. 处理结果并返回响应
 	if err != nil {
 		// 根据不同错误类型返回不同状态码
-		if err == common.ErrUserAlreadyExists {
+		if err == utils.ErrUserAlreadyExists {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "account already exists"})
 			return
 		}

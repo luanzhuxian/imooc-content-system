@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"imooc-content-system/internal/dao"
 	"imooc-content-system/internal/model"
+	"imooc-content-system/internal/utils"
 	"net/http"
 	"time"
-
-	"imooc-content-system/internal/common"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,7 +28,7 @@ func (c *CmsApp) Register(ctx *gin.Context) {
 		return
 	}
 	// 加密密码
-	hashedPassword, err := common.EncryptPassword(req.Password)
+	hashedPassword, err := utils.EncryptPassword(req.Password)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -69,5 +68,3 @@ func (c *CmsApp) Register(ctx *gin.Context) {
 		},
 	})
 }
-
-
